@@ -1,0 +1,1 @@
+# ddmanager-magento2
