@@ -1,0 +1,105 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <type name="Driveback\DigitalDataLayer\Model\PageType\Pool">
+        <arguments>
+            <argument name="types" xsi:type="array">
+                <item name="home" xsi:type="array">
+                    <item name="class" xsi:type="string">Driveback\DigitalDataLayer\Model\PageType\Home</item>
+                    <item name="sortOrder" xsi:type="string">10</item>
+                </item>
+                <item name="listing" xsi:type="array">
+                    <item name="class" xsi:type="string">Driveback\DigitalDataLayer\Model\PageType\Listing</item>
+                    <item name="sortOrder" xsi:type="string">20</item>
+                </item>
+                <item name="search" xsi:type="array">
+                    <item name="class" xsi:type="string">Driveback\DigitalDataLayer\Model\PageType\Search</item>
+                    <item name="sortOrder" xsi:type="string">30</item>
+                </item>
+                <item name="product" xsi:type="array">
+                    <item name="class" xsi:type="string">Driveback\DigitalDataLayer\Model\PageType\Product</item>
+                    <item name="sortOrder" xsi:type="string">40</item>
+                </item>
+                <item name="wishlist" xsi:type="array">
+                    <item name="class" xsi:type="string">Driveback\DigitalDataLayer\Model\PageType\Wishlist</item>
+                    <item name="sortOrder" xsi:type="string">50</item>
+                </item>
+                <item name="cart" xsi:type="array">
+                    <item name="class" xsi:type="string">Driveback\DigitalDataLayer\Model\PageType\Cart</item>
+                    <item name="sortOrder" xsi:type="string">60</item>
+                </item>
+                <item name="checkout" xsi:type="array">
+                    <item name="class" xsi:type="string">Driveback\DigitalDataLayer\Model\PageType\Checkout</item>
+                    <item name="sortOrder" xsi:type="string">70</item>
+                </item>
+                <item name="confirmation" xsi:type="array">
+                    <item name="class" xsi:type="string">Driveback\DigitalDataLayer\Model\PageType\Confirmation</item>
+                    <item name="sortOrder" xsi:type="string">80</item>
+                </item>
+                <item name="profile" xsi:type="array">
+                    <item name="class" xsi:type="string">Driveback\DigitalDataLayer\Model\PageType\Profile</item>
+                    <item name="sortOrder" xsi:type="string">90</item>
+                </item>
+                <item name="content" xsi:type="array">
+                    <item name="class" xsi:type="string">Driveback\DigitalDataLayer\Model\PageType\Content</item>
+                    <item name="sortOrder" xsi:type="string">100</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Driveback\DigitalDataLayer\Model\DataType\Pool">
+        <arguments>
+            <argument name="types" xsi:type="array">
+                <item name="version" xsi:type="array">
+                    <item name="class" xsi:type="string">Driveback\DigitalDataLayer\Model\DataType\Version</item>
+                    <item name="sortOrder" xsi:type="string">10</item>
+                </item>
+                <item name="website" xsi:type="array">
+                    <item name="class" xsi:type="string">Driveback\DigitalDataLayer\Model\DataType\Website</item>
+                    <item name="sortOrder" xsi:type="string">20</item>
+                </item>
+                <item name="page" xsi:type="array">
+                    <item name="class" xsi:type="string">Driveback\DigitalDataLayer\Model\DataType\Page</item>
+                    <item name="sortOrder" xsi:type="string">30</item>
+                </item>
+                <item name="user" xsi:type="array">
+                    <item name="class" xsi:type="string">Driveback\DigitalDataLayer\Model\DataType\User</item>
+                    <item name="sortOrder" xsi:type="string">40</item>
+                </item>
+                <item name="product" xsi:type="array">
+                    <item name="class" xsi:type="string">Driveback\DigitalDataLayer\Model\DataType\Product</item>
+                    <item name="sortOrder" xsi:type="string">50</item>
+                </item>
+                <!--item name="wishlist" xsi:type="array">
+                    <item name="class" xsi:type="string">Driveback\DigitalDataLayer\Model\DataType\Wishlist</item>
+                    <item name="sortOrder" xsi:type="string">60</item>
+                </item>
+                <item name="cart" xsi:type="array">
+                    <item name="class" xsi:type="string">Driveback\DigitalDataLayer\Model\DataType\Cart</item>
+                    <item name="sortOrder" xsi:type="string">70</item>
+                </item>
+                <item name="transaction" xsi:type="array">
+                    <item name="class" xsi:type="string">Driveback\DigitalDataLayer\Model\DataType\Transaction</item>
+                    <item name="sortOrder" xsi:type="string">80</item>
+                </item>
+                <item name="listing" xsi:type="array">
+                    <item name="class" xsi:type="string">Driveback\DigitalDataLayer\Model\DataType\Listing</item>
+                    <item name="sortOrder" xsi:type="string">90</item>
+                </item>
+                <item name="recommendation" xsi:type="array">
+                    <item name="class" xsi:type="string">Driveback\DigitalDataLayer\Model\DataType\Recommendation</item>
+                    <item name="sortOrder" xsi:type="string">100</item>
+                </item>
+                <item name="campaigns" xsi:type="array">
+                    <item name="class" xsi:type="string">Driveback\DigitalDataLayer\Model\DataType\Campaigns</item>
+                    <item name="sortOrder" xsi:type="string">110</item>
+                </item>
+                <item name="events" xsi:type="array">
+                    <item name="class" xsi:type="string">Driveback\DigitalDataLayer\Model\DataType\Events</item>
+                    <item name="sortOrder" xsi:type="string">120</item>
+                </item-->
+            </argument>
+        </arguments>
+    </type>
+</config>

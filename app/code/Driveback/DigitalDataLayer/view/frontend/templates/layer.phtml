@@ -1,0 +1,12 @@
+<?php
+/**
+ * @var $block \Driveback\DigitalDataLayer\Block\Layer
+ */
+?>
+<!-- Digital Data Layer -->
+<script type="text/javascript">
+    (function () {
+        window.digitalData = <?php echo json_encode($block->getDigitalData()) ?>;
+    })();
+</script>
+<!-- //Digital Data Layer -->

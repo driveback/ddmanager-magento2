@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="head.additional">
+            <block class="Driveback\DigitalDataLayer\Block\Layer" name="driveback_ddl" template="Driveback_DigitalDataLayer::layer.phtml" before="-" cacheable="false"/>
+            <block class="Driveback\DigitalDataLayer\Block\Manager" name="driveback_ddm" template="Driveback_DigitalDataLayer::manager.phtml" before="-" after="driveback_ddl"/>
+        </referenceBlock>
+    </body>
+</page>
