@@ -74,7 +74,7 @@
                 <!--item name="wishlist" xsi:type="array">
                     <item name="class" xsi:type="string">Driveback\DigitalDataLayer\Model\DataType\Wishlist</item>
                     <item name="sortOrder" xsi:type="string">60</item>
-                </item>
+                </item-->
                 <item name="cart" xsi:type="array">
                     <item name="class" xsi:type="string">Driveback\DigitalDataLayer\Model\DataType\Cart</item>
                     <item name="sortOrder" xsi:type="string">70</item>
@@ -83,7 +83,7 @@
                     <item name="class" xsi:type="string">Driveback\DigitalDataLayer\Model\DataType\Transaction</item>
                     <item name="sortOrder" xsi:type="string">80</item>
                 </item>
-                <item name="listing" xsi:type="array">
+                <!--item name="listing" xsi:type="array">
                     <item name="class" xsi:type="string">Driveback\DigitalDataLayer\Model\DataType\Listing</item>
                     <item name="sortOrder" xsi:type="string">90</item>
                 </item>

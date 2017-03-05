@@ -89,19 +89,26 @@ class Product implements DataTypeInterface
     }
 
     /**
-     * @return array
+     * @return bool
+     */
+    protected function _isProductPage()
+    {
+        return $this->_request->getRouteName() == 'catalog'
+        && $this->_request->getControllerName() == 'product'
+        && $this->_request->getActionName() == 'view';
+    }
+
+    /**
+     * @return null|array
      */
     public function getDigitalDataValue()
     {
-        if ($this->_request->getRouteName() == 'catalog'
-            && $this->_request->getControllerName() == 'product'
-            && $this->_request->getActionName() == 'view'
-        ) {
-            $product = $this->_getCurrentProduct();
-            return $this->getDigitalDataValueByProduct($product);
+        if (!$this->_isProductPage()) {
+            return null;
         }
 
-        return null;
+        $product = $this->_getCurrentProduct();
+        return $this->getDigitalDataValueByProduct($product);
     }
 
     /**
