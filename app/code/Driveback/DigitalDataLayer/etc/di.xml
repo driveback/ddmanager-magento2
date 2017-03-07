@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
 
@@ -101,5 +102,9 @@
                 </item-->
             </argument>
         </arguments>
+    </type>
+
+    <type name="Magento\Customer\CustomerData\SectionPool">
+        <plugin name="ddl_add_ddl_data" type="Driveback\DigitalDataLayer\Plugin\CustomerSectionPool" sortOrder="10" disabled="false"/>
     </type>
 </config>

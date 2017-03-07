@@ -5,6 +5,7 @@ namespace Driveback\DigitalDataLayer\Model\DataType;
 use Magento\Framework\App\RequestInterface;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Tax\Helper\Data as TaxHelper;
+use Magento\Store\Model\StoreManagerInterface;
 use Magento\Quote\Model\Quote;
 
 /**
@@ -33,6 +34,11 @@ class Cart implements DataTypeInterface
     protected $_taxHelper;
 
     /**
+     * @var StoreManagerInterface
+     */
+    protected $_storeManager;
+
+    /**
      * @var Product
      */
     protected $_product;
@@ -42,17 +48,20 @@ class Cart implements DataTypeInterface
      * @param RequestInterface $request
      * @param CheckoutSession $checkoutSession
      * @param TaxHelper $taxHelper
+     * @param StoreManagerInterface $storeManager
      * @param Product $product
      */
     public function __construct(
         RequestInterface $request,
         CheckoutSession $checkoutSession,
         TaxHelper $taxHelper,
+        StoreManagerInterface $storeManager,
         Product $product
     ) {
         $this->_request = $request;
         $this->_checkoutSession = $checkoutSession;
         $this->_taxHelper = $taxHelper;
+        $this->_storeManager = $storeManager;
         $this->_product = $product;
     }
 
@@ -169,7 +178,9 @@ class Cart implements DataTypeInterface
             $data['id'] = $quote->getId();
         }
 
-        $data['currency'] = $quote->getQuoteCurrencyCode();
+        $data['currency'] = $quote->getQuoteCurrencyCode() ?
+            $quote->getQuoteCurrencyCode() : $this->_storeManager->getStore()->getCurrentCurrencyCode();
+
         $data['subtotal'] = $lineItems ? round($quote->getSubtotal() * 1, 2) : 0;
         $data['total'] = $lineItems ? round($quote->getGrandTotal() * 1, 2) : 0;
         $data['lineItems'] = $lineItems;

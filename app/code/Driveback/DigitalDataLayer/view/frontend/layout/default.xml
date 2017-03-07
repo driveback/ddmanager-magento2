@@ -5,5 +5,8 @@
             <block class="Driveback\DigitalDataLayer\Block\Layer" name="driveback_ddl" template="Driveback_DigitalDataLayer::layer.phtml" before="-" cacheable="false"/>
             <block class="Driveback\DigitalDataLayer\Block\Manager" name="driveback_ddm" template="Driveback_DigitalDataLayer::manager.phtml" before="-" after="driveback_ddl"/>
         </referenceBlock>
+        <referenceContainer name="after.body.start">
+            <block class="Magento\Framework\View\Element\Template" template="Driveback_DigitalDataLayer::js.phtml" name="driveback.ddl.js"/>
+        </referenceContainer>
     </body>
 </page>

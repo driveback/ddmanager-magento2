@@ -1,0 +1,29 @@
+<script type="text/javascript">
+    require([
+        'jquery',
+        'underscore',
+        'ko',
+        'Magento_Customer/js/section-config',
+        'mage/storage',
+        'jquery/jquery-storageapi',
+        'Magento_Customer/js/customer-data'
+    ], function ($, _, ko, sectionConfig, mageStorage, storageApi, customerData) {
+
+        if (!window.digitalData) {
+            return;
+        }
+
+        /**
+         * Events listener
+         */
+        $(document).on('ajaxComplete', function (event, xhr, settings) {
+            var url = settings.url;
+            if (url.indexOf('customer/section/load') <= -1 || !_.isObject(xhr.responseJSON)) {
+                return;
+            }
+            if (xhr.responseJSON.ddl_cart) {
+                window.digitalData.cart = xhr.responseJSON.ddl_cart;
+            }
+        });
+    });
+</script>
