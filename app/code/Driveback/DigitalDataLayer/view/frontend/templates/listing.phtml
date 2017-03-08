@@ -1,0 +1,14 @@
+<?php
+/**
+ * @var $block \Driveback\DigitalDataLayer\Block\Layer\Listing
+ */
+$listingDataType = $block->getListingDataType();
+?>
+<?php if ($data = $listingDataType->getDigitalDataValue()) : ?>
+    <?php $dataKey = $listingDataType->getDigitalDataKey() ?>
+    <script type="text/javascript">
+        (function () {
+            window.digitalData.<?php echo $dataKey ?> = <?php echo json_encode($data) ?>;
+        })();
+    </script>
+<?php endif ?>

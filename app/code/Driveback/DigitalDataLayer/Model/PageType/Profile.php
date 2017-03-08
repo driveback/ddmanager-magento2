@@ -41,7 +41,7 @@ class Profile implements PageTypeInterface
 
         if (!empty($bodyElementAttributes['class'])) {
             $imploded = explode(' ', $bodyElementAttributes['class']);
-            if (in_array('account', $imploded)) {
+            if (in_array('ddl-profile', $imploded)) {
                 return true;
             }
         }

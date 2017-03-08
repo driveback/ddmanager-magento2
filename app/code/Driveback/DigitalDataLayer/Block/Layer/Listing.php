@@ -1,25 +1,25 @@
 <?php
 
-namespace Driveback\DigitalDataLayer\Block;
+namespace Driveback\DigitalDataLayer\Block\Layer;
+
+use Driveback\DigitalDataLayer\Block\Layer;
+use Driveback\DigitalDataLayer\Model\DataType\Listing as ListingDataType;
 
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Store\Model\ScopeInterface;
-use Driveback\DigitalDataLayer\Model\DataType\Pool as DataTypePool;
 
 /**
- * Class Layer
+ * Class Listing
  */
-class Layer extends Template
+class Listing extends Template
 {
-    const XML_PATH_ENABLED = 'driveback_ddl/settings/layer_enabled';
-
     /**
-     * @var DataTypePool
+     * @var ListingDataType
      */
-    protected $_dataTypePool;
+    protected $_listingDataType;
 
     /**
      * @var ScopeConfigInterface
@@ -34,18 +34,18 @@ class Layer extends Template
     protected $_storeManager;
 
     /**
-     * Layer constructor.
+     * Listing constructor.
      * @param Context $context
-     * @param DataTypePool $dataTypePool
+     * @param ListingDataType $listing
      * @param array $data
      */
     public function __construct(
         Context $context,
-        DataTypePool $dataTypePool,
+        ListingDataType $listing,
         array $data = []
     ) {
         parent::__construct($context, $data);
-        $this->_dataTypePool = $dataTypePool;
+        $this->_listingDataType = $listing;
         $this->_scopeConfig = $context->getScopeConfig();
         $this->_storeManager = $context->getStoreManager();
     }
@@ -56,24 +56,7 @@ class Layer extends Template
     protected function _isEnabled()
     {
         $store = $this->_storeManager->getStore();
-        return (bool)$this->_scopeConfig->getValue(self::XML_PATH_ENABLED, ScopeInterface::SCOPE_STORE, $store);
-    }
-
-    /**
-     * @return array
-     */
-    public function getDigitalData()
-    {
-        $data = [];
-        foreach ($this->_dataTypePool->getTypesInstances() as $dataType) {
-            $key = $dataType->getDigitalDataKey();
-            $value = $dataType->getDigitalDataValue();
-            if ($value === null) {
-                continue;
-            }
-            $data[$key] = $value;
-        }
-        return $data;
+        return (bool)$this->_scopeConfig->getValue(Layer::XML_PATH_ENABLED, ScopeInterface::SCOPE_STORE, $store);
     }
 
     /**
@@ -85,5 +68,24 @@ class Layer extends Template
             return '';
         }
         return parent::_toHtml();
+    }
+
+    /**
+     * @return $this
+     */
+    protected function _beforeToHtml()
+    {
+        $this->_listingDataType->setListName($this->getListName());
+        $this->_listingDataType->setProductListBlockName($this->getProductListBlockName());
+        $this->_listingDataType->setShowCategory($this->getShowCategory());
+        return parent::_beforeToHtml();
+    }
+
+    /**
+     * @return ListingDataType
+     */
+    public function getListingDataType()
+    {
+        return $this->_listingDataType;
     }
 }

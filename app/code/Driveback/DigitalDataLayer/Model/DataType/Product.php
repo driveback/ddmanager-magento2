@@ -9,6 +9,7 @@ use Magento\CatalogInventory\Model\Spi\StockRegistryProviderInterface;
 use Magento\Review\Model\ReviewFactory;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory as CategoryCollectionFactory;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
+use Driveback\DigitalDataLayer\Helper\Data as DigitalDataLayerHelper;
 
 /**
  * Class Product
@@ -21,7 +22,7 @@ class Product implements DataTypeInterface
     protected $_request;
 
     /**
-     * @var \Magento\Framework\Registry
+     * @var Registry
      */
     protected $_registry;
 
@@ -53,6 +54,11 @@ class Product implements DataTypeInterface
     protected $_priceCurrency;
 
     /**
+     * @var DigitalDataLayerHelper
+     */
+    protected $_digitalDataLayerHelper;
+
+    /**
      * Product constructor.
      * @param RequestInterface $request
      * @param Registry $registry
@@ -61,6 +67,7 @@ class Product implements DataTypeInterface
      * @param ReviewFactory $reviewFactory
      * @param CategoryCollectionFactory $categoryCollectionFactory
      * @param PriceCurrencyInterface $priceCurrency
+     * @param DigitalDataLayerHelper $digitalDataLayerHelper
      */
     public function __construct(
         RequestInterface $request,
@@ -69,7 +76,8 @@ class Product implements DataTypeInterface
         StockRegistryProviderInterface $stockRegistryProvider,
         ReviewFactory $reviewFactory,
         CategoryCollectionFactory $categoryCollectionFactory,
-        PriceCurrencyInterface $priceCurrency
+        PriceCurrencyInterface $priceCurrency,
+        DigitalDataLayerHelper $digitalDataLayerHelper
     ) {
         $this->_request = $request;
         $this->_registry = $registry;
@@ -78,6 +86,7 @@ class Product implements DataTypeInterface
         $this->_reviewFactory = $reviewFactory;
         $this->_categoryCollectionFactory = $categoryCollectionFactory;
         $this->_priceCurrency = $priceCurrency;
+        $this->_digitalDataLayerHelper = $digitalDataLayerHelper;
     }
 
     /**
@@ -188,6 +197,8 @@ class Product implements DataTypeInterface
     {
         /**
          * @var $category \Magento\Catalog\Model\Category
+         * @var $collection \Magento\Catalog\Model\ResourceModel\Category\Collection
+         * @var $parentCategory \Magento\Catalog\Model\Category
          */
         $defaultValue = null;
         $categoryIds = $product->getAvailableInCategories();
@@ -199,6 +210,8 @@ class Product implements DataTypeInterface
         $collection->setStore($product->getStore());
         $collection->addIdFilter($categoryIds);
         $collection->addIsActiveFilter();
+        $collection->addNameToResult();
+        $collection->addAttributeToFilter('path', ['like' => '1/' . $product->getStore()->getRootCategoryId() . '/%']);
         $collection->addAttributeToFilter('level', ['gt' => 1]);
         $collection->addAttributeToSort('level', $collection::SORT_ORDER_DESC);
         $collection->addAttributeToSort('position', $collection::SORT_ORDER_ASC);
@@ -208,24 +221,7 @@ class Product implements DataTypeInterface
         }
 
         $category = $collection->getFirstItem();
-        $categoryIds = $category->getPathIds();
-
-        $collection = $this->_categoryCollectionFactory->create();
-        $collection->setStore($product->getStore());
-        $collection->addIdFilter($categoryIds);
-        $collection->addNameToResult();
-        $collection->addAttributeToFilter('level', ['gt' => 1]);
-        $collection->addAttributeToSort('level', $collection::SORT_ORDER_ASC);
-        if (!count($collection)) {
-            return $defaultValue;
-        }
-
-        $result = [];
-        foreach ($collection as $category) {
-            $result[] = $category->getName();
-        }
-
-        return $result;
+        return $this->_digitalDataLayerHelper->getCategoryArrayByCategory($category);
     }
 
     /**

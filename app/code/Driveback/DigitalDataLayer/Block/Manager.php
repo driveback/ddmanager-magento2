@@ -48,7 +48,7 @@ class Manager extends Template
     protected function _isEnabled()
     {
         $store = $this->_storeManager->getStore();
-        return (bool) $this->_scopeConfig->getValue(self::XML_PATH_ENABLED, ScopeInterface::SCOPE_STORE, $store);
+        return (bool)$this->_scopeConfig->getValue(self::XML_PATH_ENABLED, ScopeInterface::SCOPE_STORE, $store);
     }
 
     /**

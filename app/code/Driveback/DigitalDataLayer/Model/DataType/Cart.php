@@ -7,6 +7,7 @@ use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Tax\Helper\Data as TaxHelper;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Quote\Model\Quote;
+use Driveback\DigitalDataLayer\Model\DataType\Product as ProductDataType;
 
 /**
  * Class Cart
@@ -39,9 +40,9 @@ class Cart implements DataTypeInterface
     protected $_storeManager;
 
     /**
-     * @var Product
+     * @var ProductDataType
      */
-    protected $_product;
+    protected $_productDataType;
 
     /**
      * Cart constructor.
@@ -49,20 +50,20 @@ class Cart implements DataTypeInterface
      * @param CheckoutSession $checkoutSession
      * @param TaxHelper $taxHelper
      * @param StoreManagerInterface $storeManager
-     * @param Product $product
+     * @param ProductDataType $product
      */
     public function __construct(
         RequestInterface $request,
         CheckoutSession $checkoutSession,
         TaxHelper $taxHelper,
         StoreManagerInterface $storeManager,
-        Product $product
+        ProductDataType $product
     ) {
         $this->_request = $request;
         $this->_checkoutSession = $checkoutSession;
         $this->_taxHelper = $taxHelper;
         $this->_storeManager = $storeManager;
-        $this->_product = $product;
+        $this->_productDataType = $product;
     }
 
     /**
@@ -84,7 +85,7 @@ class Cart implements DataTypeInterface
         foreach ($quote->getAllVisibleItems() as $item) {
             $subtotal = $isTaxIncluded ? $item->getRowTotalInclTax() * 1 : $item->getRowTotal() * 1;
             $lineItems[] = [
-                'product' => $this->_product->getDigitalDataValueByProduct($item->getProduct()),
+                'product' => $this->_productDataType->getDigitalDataValueByProduct($item->getProduct()),
                 'quantity' => $item->getQty() * 1,
                 'subtotal' => round($subtotal, 2),
                 'isTaxIncluded' => $isTaxIncluded,
