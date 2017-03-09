@@ -172,6 +172,7 @@ class Listing implements DataTypeInterface
             'listName' => $this->_listName,
         ];
 
+        $displayProducts = true;
         if ($this->_showCategory) {
             $category = $this->getCurrentCategory();
             if ($category) {
@@ -180,18 +181,26 @@ class Listing implements DataTypeInterface
                 if ($categories !== null) {
                     $data['category'] = $categories;
                 }
+                if ($this->_listName == 'category' && $category->getDisplayMode() == Category::DM_PAGE) {
+                    $displayProducts = false;
+                }
             }
         }
 
-        $layout = $this->_view->getLayout();
-        $productsList = $layout->getBlock($this->_productListBlockName);
-        if ($productsList instanceof ListProduct) {
+        $productsList = $this->_view->getLayout()->getBlock($this->_productListBlockName);
+        if ($displayProducts && $productsList instanceof ListProduct) {
             $products = $productsList->getLoadedProductCollection();
             $items = [];
             foreach ($products as $product) {
                 $items[] = $this->_productDataType->getDigitalDataValueByProduct($product);
             }
             $data['items'] = $items;
+
+            if ($this->_listName == 'search') {
+                if ($query = $this->_request->getParam(\Magento\Search\Model\QueryFactory::QUERY_VAR_NAME)) {
+                    $data['query'] = $query;
+                }
+            }
 
             if ($toolbarBlockName = $productsList->getToolbarBlockName()) {
                 $toolbar = $productsList->getToolbarBlock();
