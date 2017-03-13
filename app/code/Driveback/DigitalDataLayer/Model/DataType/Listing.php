@@ -56,21 +56,6 @@ class Listing implements DataTypeInterface
     protected $_digitalDataLayerHelper;
 
     /**
-     * @var string
-     */
-    protected $_listName;
-
-    /**
-     * @var string
-     */
-    protected $_productListBlockName;
-
-    /**
-     * @var bool
-     */
-    protected $_showCategory = false;
-
-    /**
      * Listing constructor.
      * @param RequestInterface $request
      * @param Registry $registry
@@ -129,51 +114,25 @@ class Listing implements DataTypeInterface
     }
 
     /**
-     * @param string $listName
-     * @return $this
-     */
-    public function setListName($listName)
-    {
-        $this->_listName = $listName;
-        return $this;
-    }
-
-    /**
-     * @param string $blockName
-     * @return $this
-     */
-    public function setProductListBlockName($blockName)
-    {
-        $this->_productListBlockName = $blockName;
-        return $this;
-    }
-
-    /**
-     * @param bool $showCategory
-     * @return $this
-     */
-    public function setShowCategory($showCategory)
-    {
-        $this->_showCategory = (bool)$showCategory;
-        return $this;
-    }
-
-    /**
      * @return array
      */
     public function getDigitalDataValue()
     {
-        if (!$this->_listName || !$this->_productListBlockName) {
+        $listName = $this->_registry->registry('listing_list_name');
+        $productListBlockName = $this->_registry->registry('listing_product_list_block_name');
+        $showCategory = $this->_registry->registry('listing_show_category');
+
+        if (!$listName || !$productListBlockName) {
             return null;
         }
 
         $data = [
             'listId' => 'main',
-            'listName' => $this->_listName,
+            'listName' => $listName,
         ];
 
         $displayProducts = true;
-        if ($this->_showCategory) {
+        if ($showCategory) {
             $category = $this->getCurrentCategory();
             if ($category) {
                 $data['categoryId'] = $category->getId();
@@ -181,13 +140,13 @@ class Listing implements DataTypeInterface
                 if ($categories !== null) {
                     $data['category'] = $categories;
                 }
-                if ($this->_listName == 'category' && $category->getDisplayMode() == Category::DM_PAGE) {
+                if ($listName == 'category' && $category->getDisplayMode() == Category::DM_PAGE) {
                     $displayProducts = false;
                 }
             }
         }
 
-        $productsList = $this->_view->getLayout()->getBlock($this->_productListBlockName);
+        $productsList = $this->_view->getLayout()->getBlock($productListBlockName);
         if ($displayProducts && $productsList instanceof ListProduct) {
             $products = $productsList->getLoadedProductCollection();
             $items = [];
@@ -196,7 +155,7 @@ class Listing implements DataTypeInterface
             }
             $data['items'] = $items;
 
-            if ($this->_listName == 'search') {
+            if ($listName == 'search') {
                 if ($query = $this->_request->getParam(\Magento\Search\Model\QueryFactory::QUERY_VAR_NAME)) {
                     $data['query'] = $query;
                 }

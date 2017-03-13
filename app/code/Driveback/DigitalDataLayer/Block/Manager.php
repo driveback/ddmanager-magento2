@@ -65,7 +65,7 @@ class Manager extends Template
      */
     protected function _toHtml()
     {
-        if (true || !$this->_isEnabled() || !$this->getProjectId()) {
+        if (!$this->_isEnabled() || !$this->getProjectId()) {
             return '';
         }
         return parent::_toHtml();

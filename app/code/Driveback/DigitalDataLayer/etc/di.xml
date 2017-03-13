@@ -84,11 +84,11 @@
                     <item name="class" xsi:type="string">Driveback\DigitalDataLayer\Model\DataType\Transaction</item>
                     <item name="sortOrder" xsi:type="string">80</item>
                 </item>
-                <!--item name="listing" xsi:type="array">
+                <item name="listing" xsi:type="array">
                     <item name="class" xsi:type="string">Driveback\DigitalDataLayer\Model\DataType\Listing</item>
                     <item name="sortOrder" xsi:type="string">90</item>
                 </item>
-                <item name="recommendation" xsi:type="array">
+                <!--item name="recommendation" xsi:type="array">
                     <item name="class" xsi:type="string">Driveback\DigitalDataLayer\Model\DataType\Recommendation</item>
                     <item name="sortOrder" xsi:type="string">100</item>
                 </item>

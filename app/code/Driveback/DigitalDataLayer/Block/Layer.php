@@ -7,7 +7,9 @@ use Magento\Framework\View\Element\Template;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Store\Model\ScopeInterface;
+use Magento\Framework\Registry;
 use Driveback\DigitalDataLayer\Model\DataType\Pool as DataTypePool;
+use Driveback\DigitalDataLayer\Model\DataType\Listing as ListingDataType;
 
 /**
  * Class Layer
@@ -15,6 +17,11 @@ use Driveback\DigitalDataLayer\Model\DataType\Pool as DataTypePool;
 class Layer extends Template
 {
     const XML_PATH_ENABLED = 'driveback_ddl/settings/layer_enabled';
+
+    /**
+     * @var Registry
+     */
+    protected $_registry;
 
     /**
      * @var DataTypePool
@@ -36,15 +43,18 @@ class Layer extends Template
     /**
      * Layer constructor.
      * @param Context $context
+     * @param Registry $registry
      * @param DataTypePool $dataTypePool
      * @param array $data
      */
     public function __construct(
         Context $context,
+        Registry $registry,
         DataTypePool $dataTypePool,
         array $data = []
     ) {
         parent::__construct($context, $data);
+        $this->_registry = $registry;
         $this->_dataTypePool = $dataTypePool;
         $this->_scopeConfig = $context->getScopeConfig();
         $this->_storeManager = $context->getStoreManager();
@@ -85,5 +95,17 @@ class Layer extends Template
             return '';
         }
         return parent::_toHtml();
+    }
+
+    /**
+     * @param string $key
+     * @param string $value
+     * @return $this
+     */
+    public function setRegistryValue($key, $value)
+    {
+        $this->_registry->unregister($key);
+        $this->_registry->register($key, $value);
+        return $this;
     }
 }
