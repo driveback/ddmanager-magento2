@@ -1,4 +1,7 @@
 <script type="text/javascript">
+    var cookieAddToCart = '<?php echo \Driveback\DigitalDataLayer\Helper\Data::COOKIE_ADD_TO_CART ?>';
+    var cookieRemoveFromCart = '<?php echo \Driveback\DigitalDataLayer\Helper\Data::COOKIE_REMOVE_FROM_CART ?>';
+
     require([
         'jquery',
         'underscore'
@@ -16,6 +19,8 @@
             }
 
             if (typeof xhr.responseJSON.ddl_cart === 'object') {
+                pushCartEventDataFromCookie(cookieAddToCart, 'Added Product');
+                pushCartEventDataFromCookie(cookieRemoveFromCart, 'Removed Product');
                 if (typeof window.digitalData.cart === 'object' || xhr.responseJSON.ddl_cart.lineItems.length > 0) {
                     if (typeof window.digitalData.cart === 'object'
                         && typeof window.digitalData.cart.checkoutStep === 'number'
@@ -26,5 +31,58 @@
                 }
             }
         });
+
+        var pushCartEventDataFromCookie = function (cookieName, eventName) {
+            var data = getCookie(cookieName);
+            if (!data) {
+                return;
+            }
+
+            data = decodeURIComponent(data);
+            data = JSON.parse(data);
+            delCookie(cookieName);
+            if (data.length == 0) {
+                return;
+            }
+
+            for (var i in data) {
+                if (i != 'length' && data.hasOwnProperty(i)) {
+                    if (typeof window.digitalData.events === 'undefined') {
+                        window.digitalData.events = [];
+                    }
+                    window.digitalData.events.push({
+                        'category': 'Ecommerce',
+                        'name': eventName,
+                        'product': data[i].product,
+                        'quantity': data[i].quantity
+                    });
+                }
+            }
+        };
+
+        var getCookie = function (name) {
+            var cookie = ' ' + document.cookie;
+            var search = ' ' + name + '=';
+            var setStr = null;
+            var offset = 0;
+            var end = 0;
+            if (cookie.length > 0) {
+                offset = cookie.indexOf(search);
+                if (offset != -1) {
+                    offset += search.length;
+                    end = cookie.indexOf(';', offset);
+                    if (end == -1) {
+                        end = cookie.length;
+                    }
+                    setStr = decodeURI(cookie.substring(offset, end));
+                }
+            }
+            return (setStr);
+        };
+
+        var delCookie = function (name) {
+            var date = new Date(0);
+            document.cookie = name + '=' + '; path=/; expires=' + date.toUTCString();
+        }
     });
 </script>

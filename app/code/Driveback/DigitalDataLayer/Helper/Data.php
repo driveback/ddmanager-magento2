@@ -4,16 +4,25 @@ namespace Driveback\DigitalDataLayer\Helper;
 
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
-use Driveback\DigitalDataLayer\Model\PageType\Pool as PageTypePool;
-use Driveback\DigitalDataLayer\Model\PageType\PageTypeInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Catalog\Model\Category;
+use Magento\Store\Model\ScopeInterface;
+use Driveback\DigitalDataLayer\Model\PageType\Pool as PageTypePool;
+use Driveback\DigitalDataLayer\Model\PageType\PageTypeInterface;
 
 /**
  * Class Data
  */
 class Data extends AbstractHelper
 {
+    const XML_PATH_LAYER_ENABLED = 'driveback_ddl/settings/layer_enabled';
+    const XML_PATH_MANAGER_ENABLED = 'driveback_ddl/settings/manager_enabled';
+    const XML_PATH_PROJECT_ID = 'driveback_ddl/settings/project_id';
+
+    const CART_PRODUCT_QUANTITIES = 'ddl_prev_product_qty';
+    const COOKIE_ADD_TO_CART = 'ddl_add_to_cart';
+    const COOKIE_REMOVE_FROM_CART = 'ddl_remove_from_cart';
+
     /**
      * @var PageTypePool
      */
@@ -40,6 +49,33 @@ class Data extends AbstractHelper
     ) {
         parent::__construct($context);
         $this->_pageTypePool = $pageTypePool;
+    }
+
+    /**
+     * @param null $store
+     * @return bool
+     */
+    public function isLayerEnabled($store = null)
+    {
+        return (bool)$this->scopeConfig->getValue(self::XML_PATH_LAYER_ENABLED, ScopeInterface::SCOPE_STORE, $store);
+    }
+
+    /**
+     * @param null $store
+     * @return bool
+     */
+    public function isManagerEnabled($store = null)
+    {
+        return (bool)$this->scopeConfig->getValue(self::XML_PATH_MANAGER_ENABLED, ScopeInterface::SCOPE_STORE, $store);
+    }
+
+    /**
+     * @param null $store
+     * @return string
+     */
+    public function getProjectId($store = null)
+    {
+        return $this->scopeConfig->getValue(self::XML_PATH_PROJECT_ID, ScopeInterface::SCOPE_STORE, $store);
     }
 
     /**

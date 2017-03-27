@@ -4,51 +4,31 @@ namespace Driveback\DigitalDataLayer\Block;
 
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Framework\View\Element\Template;
-use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Store\Model\StoreManagerInterface;
-use Magento\Store\Model\ScopeInterface;
+use Driveback\DigitalDataLayer\Helper\Data as DataHelper;
 
 /**
  * Class Layer
  */
 class Manager extends Template
 {
-    const XML_PATH_ENABLED = 'driveback_ddl/settings/manager_enabled';
-    const XML_PATH_PROJECT_ID = 'driveback_ddl/settings/project_id';
-
     /**
-     * @var ScopeConfigInterface
+     * @var DataHelper
      */
-    protected $_scopeConfig;
-
-    /**
-     * Store manager
-     *
-     * @var StoreManagerInterface
-     */
-    protected $_storeManager;
+    protected $_helper;
 
     /**
      * Manager constructor.
      * @param Context $context
+     * @param DataHelper $dataHelper
      * @param array $data
      */
     public function __construct(
         Context $context,
+        DataHelper $dataHelper,
         array $data = []
     ) {
         parent::__construct($context, $data);
-        $this->_scopeConfig = $context->getScopeConfig();
-        $this->_storeManager = $context->getStoreManager();
-    }
-
-    /**
-     * @return bool
-     */
-    protected function _isEnabled()
-    {
-        $store = $this->_storeManager->getStore();
-        return (bool)$this->_scopeConfig->getValue(self::XML_PATH_ENABLED, ScopeInterface::SCOPE_STORE, $store);
+        $this->_helper = $dataHelper;
     }
 
     /**
@@ -56,8 +36,7 @@ class Manager extends Template
      */
     public function getProjectId()
     {
-        $store = $this->_storeManager->getStore();
-        return $this->_scopeConfig->getValue(self::XML_PATH_PROJECT_ID, ScopeInterface::SCOPE_STORE, $store);
+        return $this->_helper->getProjectId();
     }
 
     /**
@@ -65,7 +44,7 @@ class Manager extends Template
      */
     protected function _toHtml()
     {
-        if (!$this->_isEnabled() || !$this->getProjectId()) {
+        if (!$this->_helper->isManagerEnabled() || !$this->getProjectId()) {
             return '';
         }
         return parent::_toHtml();

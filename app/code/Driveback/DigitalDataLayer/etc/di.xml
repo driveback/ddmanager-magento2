@@ -95,16 +95,12 @@
                 <item name="campaigns" xsi:type="array">
                     <item name="class" xsi:type="string">Driveback\DigitalDataLayer\Model\DataType\Campaigns</item>
                     <item name="sortOrder" xsi:type="string">110</item>
-                </item>
+                </item-->
                 <item name="events" xsi:type="array">
                     <item name="class" xsi:type="string">Driveback\DigitalDataLayer\Model\DataType\Events</item>
                     <item name="sortOrder" xsi:type="string">120</item>
-                </item-->
+                </item>
             </argument>
         </arguments>
-    </type>
-
-    <type name="Magento\Customer\CustomerData\SectionPool">
-        <plugin name="ddl_add_ddl_data" type="Driveback\DigitalDataLayer\Plugin\CustomerSectionPool" sortOrder="10" disabled="false"/>
     </type>
 </config>

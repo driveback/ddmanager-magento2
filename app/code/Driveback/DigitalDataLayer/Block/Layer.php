@@ -4,12 +4,9 @@ namespace Driveback\DigitalDataLayer\Block;
 
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Framework\View\Element\Template;
-use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Store\Model\StoreManagerInterface;
-use Magento\Store\Model\ScopeInterface;
 use Magento\Framework\Registry;
 use Driveback\DigitalDataLayer\Model\DataType\Pool as DataTypePool;
-use Driveback\DigitalDataLayer\Model\DataType\Listing as ListingDataType;
+use Driveback\DigitalDataLayer\Helper\Data as DataHelper;
 
 /**
  * Class Layer
@@ -29,44 +26,29 @@ class Layer extends Template
     protected $_dataTypePool;
 
     /**
-     * @var ScopeConfigInterface
+     * @var DataHelper
      */
-    protected $_scopeConfig;
-
-    /**
-     * Store manager
-     *
-     * @var StoreManagerInterface
-     */
-    protected $_storeManager;
+    protected $_helper;
 
     /**
      * Layer constructor.
      * @param Context $context
      * @param Registry $registry
      * @param DataTypePool $dataTypePool
+     * @param DataHelper $dataHelper
      * @param array $data
      */
     public function __construct(
         Context $context,
         Registry $registry,
         DataTypePool $dataTypePool,
+        DataHelper $dataHelper,
         array $data = []
     ) {
         parent::__construct($context, $data);
         $this->_registry = $registry;
         $this->_dataTypePool = $dataTypePool;
-        $this->_scopeConfig = $context->getScopeConfig();
-        $this->_storeManager = $context->getStoreManager();
-    }
-
-    /**
-     * @return bool
-     */
-    protected function _isEnabled()
-    {
-        $store = $this->_storeManager->getStore();
-        return (bool)$this->_scopeConfig->getValue(self::XML_PATH_ENABLED, ScopeInterface::SCOPE_STORE, $store);
+        $this->_helper = $dataHelper;
     }
 
     /**
@@ -91,7 +73,7 @@ class Layer extends Template
      */
     protected function _toHtml()
     {
-        if (!$this->_isEnabled()) {
+        if (!$this->_helper->isLayerEnabled()) {
             return '';
         }
         return parent::_toHtml();

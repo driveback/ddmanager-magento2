@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Customer\CustomerData\SectionPool">
+        <plugin name="ddl_add_ddl_data" type="Driveback\DigitalDataLayer\Plugin\CustomerSectionPool" sortOrder="10"
+                disabled="false"/>
+    </type>
+    <type name="Magento\Quote\Model\Quote">
+        <plugin name="ddl_quote" type="Driveback\DigitalDataLayer\Plugin\Quote"/>
+    </type>
+</config>

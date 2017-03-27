@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="sales_quote_product_add_after">
+        <observer name="ddl_add_to_cart" instance="Driveback\DigitalDataLayer\Observer\CartAddObserver"/>
+    </event>
+    <event name="checkout_cart_product_update_after">
+        <observer name="ddl_update_item" instance="Driveback\DigitalDataLayer\Observer\CartItemUpdateObserver"/>
+    </event>
+    <event name="checkout_cart_update_items_after">
+        <observer name="ddl_update_items" instance="Driveback\DigitalDataLayer\Observer\CartItemsUpdateObserver"/>
+    </event>
+    <event name="sales_quote_remove_item">
+        <observer name="ddl_cart_remove" instance="Driveback\DigitalDataLayer\Observer\CartRemoveObserver"/>
+    </event>
+    <event name="controller_action_postdispatch">
+        <observer name="ddl_postdispatch"
+                  instance="Driveback\DigitalDataLayer\Observer\SendCookieOnCartActionCompleteObserver"/>
+    </event>
+</config>
